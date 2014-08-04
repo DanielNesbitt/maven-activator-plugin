@@ -15,7 +15,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 public final class ActivatorCleanMojo extends AbstractMojo {
 
     public void execute() throws MojoExecutionException {
-        Activator.execute("stop");
+        Activator.execute("clean");
     }
 
 }
