@@ -1,9 +1,5 @@
 package com.dnesbitt.maven.activator;
 
-import com.dnesbitt.maven.activator.util.Activator;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-
 /**
  * Starts the Activator application as a separate process.
  * The corresponding <code>stop</code> goal will end the
@@ -15,10 +11,11 @@ import org.apache.maven.plugin.MojoExecutionException;
  *
  * @author Daniel Nesbitt
  */
-public final class ActivatorStartMojo extends AbstractMojo {
+public final class ActivatorStartMojo extends AbstractActivatorMojo {
 
-    public void execute() throws MojoExecutionException {
-        Activator.execute("start");
-    }
+	@Override
+	final String command() {
+		return "start";
+	}
 
 }

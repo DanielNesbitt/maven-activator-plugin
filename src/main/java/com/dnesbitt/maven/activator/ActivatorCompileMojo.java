@@ -1,10 +1,5 @@
 package com.dnesbitt.maven.activator;
 
-import com.dnesbitt.maven.activator.util.Activator;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-
 /**
  * Compile the project.
  *
@@ -13,11 +8,11 @@ import org.apache.maven.plugin.MojoFailureException;
  *
  * @author Daniel Nesbitt
  */
-public final class ActivatorCompileMojo extends AbstractMojo {
+public final class ActivatorCompileMojo extends AbstractActivatorMojo {
 
-    @Override
-    public void execute() throws MojoExecutionException, MojoFailureException {
-        Activator.execute("compile");
-    }
+	@Override
+	final String command() {
+		return "compile";
+	}
 
 }

@@ -1,9 +1,5 @@
 package com.dnesbitt.maven.activator;
 
-import com.dnesbitt.maven.activator.util.Activator;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-
 /**
  * Stop the background Activator application.
  *
@@ -13,10 +9,11 @@ import org.apache.maven.plugin.MojoExecutionException;
  *
  * @author Daniel Nesbitt
  */
-public final class ActivatorStopMojo extends AbstractMojo {
+public final class ActivatorStopMojo extends AbstractActivatorMojo {
 
-    public void execute() throws MojoExecutionException {
-        Activator.execute("stop");
-    }
+	@Override
+	final String command() {
+		return "stop";
+	}
 
 }

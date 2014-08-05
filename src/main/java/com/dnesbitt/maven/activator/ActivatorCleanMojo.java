@@ -1,9 +1,5 @@
 package com.dnesbitt.maven.activator;
 
-import com.dnesbitt.maven.activator.util.Activator;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-
 /**
  * Clean the project.
  *
@@ -12,10 +8,11 @@ import org.apache.maven.plugin.MojoExecutionException;
  *
  * @author Daniel Nesbitt
  */
-public final class ActivatorCleanMojo extends AbstractMojo {
+public final class ActivatorCleanMojo extends AbstractActivatorMojo {
 
-    public void execute() throws MojoExecutionException {
-        Activator.execute("clean");
-    }
+	@Override
+	final String command() {
+		return "clean";
+	}
 
 }

@@ -5,12 +5,14 @@ import com.dnesbitt.util.Zip;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.http.client.fluent.Request;
+import org.apache.maven.plugin.MojoExecutionException;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
 
 /**
  * @author Daniel Nesbitt
@@ -20,39 +22,41 @@ public final class Activator {
 	// ------------- Version -------------
 
 	private final String version;
+	private final Map<String, String> systemProperties;
 
 	// ------------- Constructor -------------
 
-	private Activator(String version) {
+	public Activator(String version, Map<String, String> systemProperties) {
 		this.version = version;
+		this.systemProperties = systemProperties;
 	}
 
 	// ------------- Public -------------
 
-	public static void execute(String command) {
-		Activator activator = new Activator("1.2.3");
-		activator._execute(command);
-	}
-
-	// ------------- Private -------------
-
-	private void _execute(String command) {
+	public final void execute(String command) throws MojoExecutionException {
 		downloadActivatorIfNeeded();
 		String pathToScript = getActivatorScript().getAbsolutePath();
 
 		CommandLine cmd = CommandLine.parse(pathToScript);
+
+		for (String key : systemProperties.keySet()) {
+			cmd.addArgument("\"-D" + key + "=" + systemProperties.get(key) + "\"", false);
+		}
+
 		cmd.addArgument(command);
 		DefaultExecutor executor = new DefaultExecutor();
 
 		executor.setExitValue(0);
 		try {
 			executor.execute(cmd);
-		} catch (IOException e) {
-			// Ignore.
+		} catch (Throwable th) {
+			throw new MojoExecutionException("Failed invoke activator command.", th);
 		}
 	}
 
-	private void downloadActivatorIfNeeded() {
+	// ------------- Private -------------
+
+	private void downloadActivatorIfNeeded() throws MojoExecutionException {
 		if (!getActivatorScript().exists()) {
 			File outputDir = getActivatorDirectory().toFile();
 
@@ -64,7 +68,7 @@ public final class Activator {
 			) {
 				Zip.unzipToDirectory(is, outputDir);
 			} catch (IOException e) {
-				throw new RuntimeException("Failed to download activator.", e);
+				throw new MojoExecutionException("Failed to download activator.", e);
 			}
 		}
 	}
@@ -79,12 +83,6 @@ public final class Activator {
 	private Path getActivatorDirectory() {
 		return Paths.get(System.getProperty("user.home"))
 				.resolve(".activator");
-	}
-
-	// -------------------- Main --------------------
-
-	public static final void main(String[] args) throws Exception {
-		Activator.execute("clean");
 	}
 
 }
