@@ -40,7 +40,13 @@ public final class Activator {
 		CommandLine cmd = CommandLine.parse(pathToScript);
 
 		for (String key : systemProperties.keySet()) {
-			cmd.addArgument("\"-D" + key + "=" + systemProperties.get(key) + "\"", false);
+			String argument = "-D" + key + "=" + systemProperties.get(key);
+			if (OS.isWindows()) {
+				// The batch file on Windows doesn't handle property commands nicely
+				cmd.addArgument("\"" + argument + "\"", false);
+			} else {
+				cmd.addArgument(argument);
+			}
 		}
 
 		cmd.addArgument(command);
