@@ -1,8 +1,9 @@
 package com.dnesbitt.maven.activator;
 
 /**
- * Package the Activator application using the native <code>dist</code>
- * command. A zip file with everything necessary to run the application.
+ * Package the Activator application using the native <code>stage</code>
+ * command. Generates jar files in the <code>target/universal/stage/lib</code>
+ * directory.
  *
  * @goal package
  * @phase package
@@ -13,7 +14,7 @@ public final class ActivatorPackageMojo extends AbstractActivatorMojo {
 
 	@Override
 	final String command() {
-		return "dist";
+		return "stage";
 	}
 
 }
