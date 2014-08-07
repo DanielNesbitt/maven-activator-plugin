@@ -24,10 +24,9 @@
 
     <groupId>com.dnesbitt</groupId>
     <artifactId>activator-maven-plugin</artifactId>
-    <version>1.01-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
     <name>activator-maven-plugin</name>
-
 
     <licenses>
         <license>
@@ -200,4 +199,5 @@
             </build>
         </profile>
     </profiles>
+	
 </project>
