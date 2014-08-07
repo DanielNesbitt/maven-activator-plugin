@@ -35,19 +35,18 @@ public final class Activator {
 
 	public final void execute(String command) throws MojoExecutionException {
 		downloadActivatorIfNeeded();
-		String pathToScript = getActivatorScript().getAbsolutePath();
 
-		CommandLine cmd = CommandLine.parse(pathToScript);
+		CommandLine cmd = CommandLine.parse(getActivatorScript().getAbsolutePath());
 
-		for (String key : systemProperties.keySet()) {
-			String argument = "-D" + key + "=" + systemProperties.get(key);
+		systemProperties.forEach((key,value) -> {
+			String argument = "-D" + key + "=" + systemProperties.get(value);
 			if (OS.isWindows()) {
 				// The batch file on Windows doesn't handle property commands nicely
 				cmd.addArgument("\"" + argument + "\"", false);
 			} else {
 				cmd.addArgument(argument);
 			}
-		}
+		});
 
 		cmd.addArgument(command);
 		DefaultExecutor executor = new DefaultExecutor();
