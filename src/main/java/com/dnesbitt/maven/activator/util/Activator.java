@@ -6,6 +6,7 @@ import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.http.client.fluent.Request;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.logging.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,24 +34,17 @@ public final class Activator {
 
 	// ------------- Public -------------
 
-	public final void execute(String command) throws MojoExecutionException {
+	public final void execute(String command, Log log) throws MojoExecutionException {
 		downloadActivatorIfNeeded();
 
 		CommandLine cmd = CommandLine.parse(getActivatorScript().getAbsolutePath());
 
-		systemProperties.forEach((key,value) -> {
-			String argument = "-D" + key + "=" + systemProperties.get(value);
-			if (OS.isWindows()) {
-				// The batch file on Windows doesn't handle property commands nicely
-				cmd.addArgument("\"" + argument + "\"", false);
-			} else {
-				cmd.addArgument(argument);
-			}
-		});
+		systemProperties.forEach((k,v) -> cmd.addArgument("-D" + k + "=" + v));
 
 		cmd.addArgument(command);
 		DefaultExecutor executor = new DefaultExecutor();
 
+		log.info("Running command: " + cmd);
 		executor.setExitValue(0);
 		try {
 			executor.execute(cmd);

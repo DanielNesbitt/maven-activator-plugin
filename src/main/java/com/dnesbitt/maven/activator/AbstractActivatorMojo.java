@@ -33,7 +33,7 @@ abstract class AbstractActivatorMojo extends AbstractMojo {
 		activatorProperties.forEach((k,v) -> getLog().info("Using system property: " + k + "=" + v));
 
 		Activator activator = new Activator(activatorVersion, activatorProperties);
-		activator.execute(command());
+		activator.execute(command(), getLog());
 	}
 
 }
