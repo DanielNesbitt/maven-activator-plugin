@@ -1,14 +1,14 @@
 package com.dnesbitt.maven.activator;
 
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.ResolutionScope;
+
 /**
  * Stop the background Activator application.
  *
- * @goal stop
- * @requiresProject false
- * @requiresDependencyResolution provided
- *
  * @author Daniel Nesbitt
  */
+@Mojo(name = "stop", requiresProject = false, requiresDependencyResolution = ResolutionScope.COMPILE)
 public final class ActivatorStopMojo extends AbstractActivatorMojo {
 
 	@Override

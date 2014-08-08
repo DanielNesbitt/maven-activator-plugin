@@ -1,14 +1,14 @@
 package com.dnesbitt.maven.activator;
 
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.ResolutionScope;
+
 /**
  * Launch the Activator application.
  *
- * @goal run
- * @requiresProject false
- * @requiresDependencyResolution provided
- *
  * @author Daniel Nesbitt
  */
+@Mojo(name = "run", requiresProject = false, requiresDependencyResolution = ResolutionScope.COMPILE)
 public final class ActivatorRunMojo extends AbstractActivatorMojo {
 
 	@Override

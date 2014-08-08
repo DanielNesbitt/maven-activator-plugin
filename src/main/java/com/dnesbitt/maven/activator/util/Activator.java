@@ -34,7 +34,7 @@ public final class Activator {
 
 	// ------------- Public -------------
 
-	public final void execute(String command, Log log) throws MojoExecutionException {
+	public final void execute(File basedir, String command, Log log) throws MojoExecutionException {
 		downloadActivatorIfNeeded();
 
 		CommandLine cmd = CommandLine.parse(getActivatorScript().getAbsolutePath());
@@ -43,6 +43,8 @@ public final class Activator {
 
 		cmd.addArgument(command);
 		DefaultExecutor executor = new DefaultExecutor();
+		log.info("Using directory: " + basedir.getAbsolutePath());
+		executor.setWorkingDirectory(basedir);
 
 		log.info("Running command: " + cmd);
 		executor.setExitValue(0);
