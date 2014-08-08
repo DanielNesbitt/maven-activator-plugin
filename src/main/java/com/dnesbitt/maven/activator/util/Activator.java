@@ -37,7 +37,7 @@ public final class Activator {
 	public final void execute(File basedir, String command, Log log) throws MojoExecutionException {
 		downloadActivatorIfNeeded();
 
-		CommandLine cmd = CommandLine.parse(getActivatorScript().getAbsolutePath());
+		CommandLine cmd = getInitialCommand();
 
 		systemProperties.forEach((k,v) -> cmd.addArgument("-D" + k + "=" + v));
 
@@ -56,6 +56,16 @@ public final class Activator {
 	}
 
 	// ------------- Private -------------
+
+	private final CommandLine getInitialCommand() {
+		String scriptPath = getActivatorScript().getAbsolutePath();
+		if (OS.isWindows()) {
+			return CommandLine.parse(scriptPath);
+		}
+		CommandLine cmd = CommandLine.parse("/bin/bash");
+		cmd.addArgument(scriptPath);
+		return cmd;
+	}
 
 	private void downloadActivatorIfNeeded() throws MojoExecutionException {
 		if (!getActivatorScript().exists()) {
