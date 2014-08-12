@@ -39,7 +39,13 @@ public final class Activator {
 
 		CommandLine cmd = getInitialCommand();
 
-		systemProperties.forEach((k,v) -> cmd.addArgument("-D" + k + "=" + v));
+		systemProperties.forEach((k, v) -> cmd.addArgument("-D" + k + "=" + v));
+
+		String ivyHome = System.getProperty("activator.ivy.home");
+		if (ivyHome != null) {
+			cmd.addArgument("-D" + "sbt.ivy.home" + "=" + ivyHome);
+			cmd.addArgument("-D" + "ivy.home" + "=" + ivyHome);
+		}
 
 		cmd.addArgument(command);
 		DefaultExecutor executor = new DefaultExecutor();
