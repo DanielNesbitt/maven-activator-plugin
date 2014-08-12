@@ -43,9 +43,15 @@ public final class Activator {
 
 		String ivyHome = System.getProperty("activator.ivy.home");
 		if (ivyHome != null) {
-			cmd.addArgument("-D" + "sbt.ivy.home" + "=" + ivyHome);
-			cmd.addArgument("-D" + "ivy.home" + "=" + ivyHome);
+			cmd.addArgument("-Dsbt.ivy.home=" + ivyHome);
+			cmd.addArgument("-Divy.home=" + ivyHome);
 		}
+
+		File bootProperties = new File("project/sbt.boot.properties");
+		if (bootProperties.exists()) {
+			cmd.addArgument("-Dsbt.boot.properties=" + bootProperties.getPath());
+		}
+		cmd.addArgument("-Dsbt.log.noformat=true");
 
 		cmd.addArgument(command);
 		DefaultExecutor executor = new DefaultExecutor();
