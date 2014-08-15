@@ -50,6 +50,7 @@ public final class Activator {
 		File bootProperties = new File(basedir, "project/sbt.boot.properties");
 		if (bootProperties.exists()) {
 			cmd.addArgument("-Dsbt.boot.properties=" + bootProperties.getPath());
+			cmd.addArgument("-Dsbt.override.build.repos=true");
 		}
 		cmd.addArgument("-Dsbt.log.noformat=true");
 
