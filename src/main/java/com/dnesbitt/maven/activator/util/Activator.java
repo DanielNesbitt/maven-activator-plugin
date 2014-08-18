@@ -47,11 +47,6 @@ public final class Activator {
 			cmd.addArgument("-Divy.home=" + ivyHome);
 		}
 
-		File bootProperties = new File(basedir, "project/sbt.boot.properties");
-		if (bootProperties.exists()) {
-			cmd.addArgument("-Dsbt.boot.properties=project/sbt.boot.properties");
-		}
-
 		cmd.addArgument(command);
 		DefaultExecutor executor = new DefaultExecutor();
 		log.info("Using directory: " + basedir.getAbsolutePath());
