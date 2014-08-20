@@ -14,12 +14,6 @@ import java.util.Map;
 abstract class AbstractActivatorMojo extends AbstractMojo {
 
 	/**
-	 * Which version of the activator to download.
-	 */
-	@Parameter(defaultValue = "1.2.3")
-	private String activatorVersion;
-
-	/**
 	 * Specify additional system properties for running the activator command.
 	 */
 	@Parameter
@@ -35,10 +29,13 @@ abstract class AbstractActivatorMojo extends AbstractMojo {
 
 	@Override
 	public final void execute() throws MojoExecutionException {
-		getLog().info("Running activator version: " + activatorVersion);
+		String activatorHome = System.getProperty("activator.home");
+		if (activatorHome == null) {
+			throw new MojoExecutionException("No activator.home set.");
+		}
 		activatorProperties.forEach((k,v) -> getLog().info("Using system property: " + k + "=" + v));
 
-		Activator activator = new Activator(activatorVersion, activatorProperties);
+		Activator activator = new Activator(activatorHome, activatorProperties);
 		activator.execute(project.getBasedir(), command(), getLog());
 	}
 
